@@ -28,8 +28,30 @@
   <!-- NAV BAR -->
   <nav class="fixed top-0 left-0 w-full bg-black/70 backdrop-blur-xl z-50 px-8 py-4 flex justify-between items-center border-b border-cyan-500/20">
     <h1 class="text-2xl font-bold text-cyan-400 glow">Charlie Web Engineer</h1>
-    <a href="#contact" class="px-5 py-2 border border-cyan-500 rounded-lg hover:bg-cyan-500 hover:text-black transition">Contact</a>
+
+    <!-- Hamburger -->
+    <div class="md:hidden">
+      <button id="menu-btn" class="flex flex-col justify-between w-6 h-5 focus:outline-none">
+        <span class="block h-0.5 w-full bg-cyan-400 transition-transform"></span>
+        <span class="block h-0.5 w-full bg-cyan-400 transition-transform"></span>
+        <span class="block h-0.5 w-full bg-cyan-400 transition-transform"></span>
+      </button>
+    </div>
+
+    <!-- Desktop menu -->
+    <div class="hidden md:flex gap-6 items-center">
+      <a href="#about" class="hover:text-cyan-400 transition">About</a>
+      <a href="#projects" class="hover:text-cyan-400 transition">Projects</a>
+      <a href="#contact" class="hover:text-cyan-400 transition">Contact</a>
+    </div>
   </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden fixed top-16 right-0 bg-black/90 w-2/3 h-screen p-8 flex flex-col gap-6 z-40">
+    <a href="#about" class="text-white hover:text-cyan-400 text-xl transition">About</a>
+    <a href="#projects" class="text-white hover:text-cyan-400 text-xl transition">Projects</a>
+    <a href="#contact" class="text-white hover:text-cyan-400 text-xl transition">Contact</a>
+  </div>
 
   <!-- HERO SECTION -->
   <section class="px-8 pt-32 pb-24 text-center">
@@ -51,7 +73,7 @@
 
   <!-- ABOUT SECTION -->
   <section id="about" class="px-8 py-24 grid md:grid-cols-2 gap-12 items-center">
-    <img src="IMG_20251114_192809_223.webp" class="rounded-xl shadow-xl shadow-cyan-500/30" data-aos="fade-right">
+    <img src="YOUR-PROFILE-IMAGE.jpg" class="rounded-xl shadow-xl shadow-cyan-500/30" data-aos="fade-right">
     <div data-aos="fade-left">
       <h3 class="text-3xl font-bold text-cyan-400 mb-4 glow">About Me</h3>
       <p class="text-gray-300 leading-relaxed text-lg">
@@ -117,12 +139,18 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js"></script>
   <script>
     // Hide loader
     window.addEventListener('load', () => { document.getElementById('loader').style.display = 'none'; });
 
     // Initialize AOS
     AOS.init({ duration: 1000, easing: 'ease-in-out', once: true });
+
+    // Mobile Hamburger toggle
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    btn.addEventListener('click', () => { menu.classList.toggle('hidden'); });
 
     // Three.js 3D Cube
     const scene = new THREE.Scene();
@@ -150,8 +178,5 @@
     }
     animate();
   </script>
-
-  <!-- Three.js CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js"></script>
 </body>
 </html>
