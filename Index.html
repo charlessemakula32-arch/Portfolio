@@ -6,128 +6,107 @@
   <title>Charlie Web Engineer</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Neon Glow Effect -->
+  <!-- AOS Scroll Animations -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+  <!-- Neon Glow & 3D Card CSS -->
   <style>
-    .glow {
-      text-shadow: 0 0 15px #00f2ff, 0 0 25px #00f2ff;
-    }
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
-    }
+    .glow { text-shadow: 0 0 15px #00f2ff, 0 0 25px #00f2ff; }
+    .card-hover:hover { transform: translateY(-5px) rotateX(2deg) rotateY(5deg); box-shadow: 0 0 25px rgba(0, 255, 255, 0.5); }
+    #loader { background: black; display: flex; justify-content: center; align-items: center; position: fixed; inset: 0; z-index: 50; }
   </style>
 </head>
 
 <body class="bg-black text-white overflow-x-hidden">
 
+  <!-- PRELOADER -->
+  <div id="loader">
+    <div class="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+
   <!-- NAV BAR -->
   <nav class="fixed top-0 left-0 w-full bg-black/70 backdrop-blur-xl z-50 px-8 py-4 flex justify-between items-center border-b border-cyan-500/20">
     <h1 class="text-2xl font-bold text-cyan-400 glow">Charlie Web Engineer</h1>
-    <a href="#contact" class="px-5 py-2 border border-cyan-500 rounded-lg hover:bg-cyan-500 hover:text-black transition">
-      Contact
-    </a>
+    <a href="#contact" class="px-5 py-2 border border-cyan-500 rounded-lg hover:bg-cyan-500 hover:text-black transition">Contact</a>
   </nav>
 
   <!-- HERO SECTION -->
   <section class="px-8 pt-32 pb-24 text-center">
-    <h2 class="text-5xl md:text-6xl font-extrabold leading-tight glow">
-      Futuristic Web Experiences  
-    </h2>
-    <p class="mt-6 text-lg text-gray-300">
-      I design and develop high-tech, high-speed, visually stunning websites with premium UI/UX.
+    <h2 class="text-5xl md:text-6xl font-extrabold leading-tight glow" data-aos="fade-down">Futuristic Web Experiences</h2>
+    <p class="mt-6 text-lg text-gray-300" data-aos="fade-up" data-aos-delay="200">
+      I design and develop high-tech, visually stunning websites with premium UI/UX.
     </p>
 
-    <div class="mt-10 flex justify-center gap-4">
+    <div class="mt-10 flex justify-center gap-4" data-aos="fade-up" data-aos-delay="400">
       <a href="#projects" class="px-6 py-3 bg-cyan-400 text-black rounded-lg hover:bg-cyan-300 transition font-semibold">View Projects</a>
       <a href="#contact" class="px-6 py-3 border border-cyan-400 rounded-lg hover:bg-cyan-400 hover:text-black transition">Hire Me</a>
     </div>
 
-    <!-- HERO IMAGE -->
-    <div class="mt-14 flex justify-center">
-      <img src="IMG_20251114_192809_223.webp"
-           class="w-full md:w-2/3 rounded-xl shadow-cyan-500/40 shadow-xl"
-           alt="Charlie Web Engineer Hero Image">
+    <!-- HERO IMAGE + 3D CUBE -->
+    <div class="mt-14 flex justify-center relative" data-aos="zoom-in" data-aos-delay="600">
+      <canvas id="three-canvas" class="w-full md:w-2/3 h-80 rounded-xl shadow-cyan-500/40 shadow-xl"></canvas>
     </div>
   </section>
 
   <!-- ABOUT SECTION -->
   <section id="about" class="px-8 py-24 grid md:grid-cols-2 gap-12 items-center">
-
-    <!-- YOUR PHOTO -->
-    <img src="YOUR-PROFILE-IMAGE.jpg"
-      class="rounded-xl shadow-xl shadow-cyan-500/30"
-      alt="Charlie Portrait">
-
-    <div>
+    <img src="IMG_20251114_192809_223.webp" class="rounded-xl shadow-xl shadow-cyan-500/30" data-aos="fade-right">
+    <div data-aos="fade-left">
       <h3 class="text-3xl font-bold text-cyan-400 mb-4 glow">About Me</h3>
       <p class="text-gray-300 leading-relaxed text-lg">
         I'm Charlie, a professional web engineer specializing in modern, clean, and futuristic interfaces.
-        My design approach is deeply rooted in UI/UX principles: clarity, simplicity, flow, and visual impact.
         I build scalable websites with high performance, stunning visuals, and strong branding identity.
       </p>
-
       <p class="text-gray-400 mt-4">
-        My goal is to create **world-class digital experiences** that feel smooth, intelligent, and advanced.
+        My goal is to create <strong>world-class digital experiences</strong> that feel smooth, intelligent, and advanced.
       </p>
     </div>
   </section>
 
   <!-- SERVICES -->
   <section class="px-8 py-24 bg-black">
-    <h3 class="text-3xl font-bold text-center text-cyan-400 mb-14 glow">What I Do</h3>
-
+    <h3 class="text-3xl font-bold text-center text-cyan-400 mb-14 glow" data-aos="fade-up">What I Do</h3>
     <div class="grid md:grid-cols-3 gap-10">
-
-      <div class="p-8 bg-black/40 border border-cyan-500/30 rounded-xl card-hover transition">
+      <div class="p-8 bg-black/40 border border-cyan-500/30 rounded-xl card-hover transition" data-aos="fade-up" data-aos-delay="100">
         <h4 class="text-xl font-semibold mb-3">UI/UX Design</h4>
         <p class="text-gray-400">Human-centered design built for clarity, engagement, and modern aesthetics.</p>
       </div>
-
-      <div class="p-8 bg-black/40 border border-cyan-500/30 rounded-xl card-hover transition">
+      <div class="p-8 bg-black/40 border border-cyan-500/30 rounded-xl card-hover transition" data-aos="fade-up" data-aos-delay="200">
         <h4 class="text-xl font-semibold mb-3">Frontend Engineering</h4>
         <p class="text-gray-400">Clean, fast, and responsive designs using modern frameworks & TailwindCSS.</p>
       </div>
-
-      <div class="p-8 bg-black/40 border border-cyan-500/30 rounded-xl card-hover transition">
+      <div class="p-8 bg-black/40 border border-cyan-500/30 rounded-xl card-hover transition" data-aos="fade-up" data-aos-delay="300">
         <h4 class="text-xl font-semibold mb-3">Brand Websites</h4>
         <p class="text-gray-400">High-end websites that increase trust, credibility, and conversions.</p>
       </div>
-
     </div>
   </section>
 
   <!-- PROJECTS -->
   <section id="projects" class="px-8 py-24">
-    <h3 class="text-3xl font-bold text-center text-cyan-400 mb-12 glow">Recent Work</h3>
-
+    <h3 class="text-3xl font-bold text-center text-cyan-400 mb-12 glow" data-aos="fade-up">Recent Work</h3>
     <div class="grid md:grid-cols-3 gap-10">
-
-      <div class="bg-black/40 border border-cyan-500/20 rounded-xl p-5 card-hover transition">
+      <div class="bg-black/40 border border-cyan-500/20 rounded-xl p-5 card-hover transition" data-aos="flip-left">
         <img src="YOUR-PROJECT-1.jpg" class="rounded-lg mb-4">
         <h4 class="font-semibold text-lg">Futuristic Brand Site</h4>
       </div>
-
-      <div class="bg-black/40 border border-cyan-500/20 rounded-xl p-5 card-hover transition">
+      <div class="bg-black/40 border border-cyan-500/20 rounded-xl p-5 card-hover transition" data-aos="flip-left" data-aos-delay="100">
         <img src="YOUR-PROJECT-2.jpg" class="rounded-lg mb-4">
         <h4 class="font-semibold text-lg">Neon UI Portfolio</h4>
       </div>
-
-      <div class="bg-black/40 border border-cyan-500/20 rounded-xl p-5 card-hover transition">
+      <div class="bg-black/40 border border-cyan-500/20 rounded-xl p-5 card-hover transition" data-aos="flip-left" data-aos-delay="200">
         <img src="YOUR-PROJECT-3.jpg" class="rounded-lg mb-4">
         <h4 class="font-semibold text-lg">Tech Startup Landing Page</h4>
       </div>
-
     </div>
   </section>
 
-  <!-- CONTACT FORM -->
-  <section id="contact" class="px-8 py-24 bg-black/60 text-center">
+  <!-- CONTACT -->
+  <section id="contact" class="px-8 py-24 bg-black/60 text-center" data-aos="fade-up">
     <h3 class="text-3xl font-bold text-cyan-400 mb-6 glow">Let's Work Together</h3>
-
     <p class="text-gray-300 mb-10">Ready to build something amazing?</p>
-
-    <a href="mailto:semakulacharles16@gmail.com"
-       class="px-10 py-4 bg-cyan-400 text-black font-semibold rounded-lg hover:bg-cyan-300 transition">
+    <a href="mailto:semakulacharles16@gmail.com" class="px-10 py-4 bg-cyan-400 text-black font-semibold rounded-lg hover:bg-cyan-300 transition">
       Contact Me
     </a>
   </section>
@@ -137,5 +116,42 @@
     © 2025 Charlie Web Engineer — All Rights Reserved
   </footer>
 
+  <!-- Scripts -->
+  <script>
+    // Hide loader
+    window.addEventListener('load', () => { document.getElementById('loader').style.display = 'none'; });
+
+    // Initialize AOS
+    AOS.init({ duration: 1000, easing: 'ease-in-out', once: true });
+
+    // Three.js 3D Cube
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, 400);
+    document.getElementById('three-canvas').appendChild(renderer.domElement);
+
+    const geometry = new THREE.BoxGeometry();
+    const material = new THREE.MeshStandardMaterial({ color: 0x00ffff, emissive: 0x00ffff });
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    const light = new THREE.PointLight(0x00ffff, 1);
+    light.position.set(5,5,5);
+    scene.add(light);
+
+    camera.position.z = 5;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js"></script>
 </body>
 </html>
