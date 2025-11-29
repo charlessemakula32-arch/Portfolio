@@ -37,7 +37,7 @@
   window.addEventListener('load', () => {
     document.getElementById('loader').style.display = 'none';
   });
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js"></script>
 </script>
   <!-- HERO SECTION -->
   <section class="px-8 pt-32 pb-24 text-center">
@@ -54,11 +54,13 @@
     </div>
 
     <!-- HERO IMAGE -->
-    <div class="mt-14 flex justify-center">
-      <img src="IMG_20251114_192809_223.webp"
-           class="w-full md:w-2/3 rounded-xl shadow-cyan-500/40 shadow-xl"
-           alt="Charlie Web Engineer Hero Image">
-    </div>
+    <div class="group perspective-1000 w-80 h-60">
+  <div class="bg-black/40 border border-cyan-500 rounded-xl w-full h-full transform transition-transform duration-500 group-hover:rotate-y-6 group-hover:rotate-x-3 card-hover">
+    <img src="IMG_20251114_192809_223.webp" class="rounded-lg mb-4">
+    <h4 class="font-semibold text-lg text-center">Project One</h4>
+  </div>
+</div>
+
   </section>
 
   <!-- ABOUT SECTION -->
@@ -143,9 +145,6 @@
     </a>
   </section>
 <div id="loader" class="fixed inset-0 bg-black flex justify-center items-center z-50">
-  <div class="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
-</div>
-
   <!-- FOOTER -->
   <footer class="text-center py-10 text-gray-500 border-t border-cyan-500/20">
     © 2025 Charlie Web Engineer — All Rights Reserved
