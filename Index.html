@@ -10,11 +10,34 @@
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 
-  <!-- Neon Glow & 3D Card CSS -->
+  <!-- Neon Glow, 3D Card & Hamburger CSS -->
   <style>
-    .glow { text-shadow: 0 0 15px #00f2ff, 0 0 25px #00f2ff; }
-    .card-hover:hover { transform: translateY(-5px) rotateX(2deg) rotateY(5deg); box-shadow: 0 0 25px rgba(0, 255, 255, 0.5); }
-    #loader { background: black; display: flex; justify-content: center; align-items: center; position: fixed; inset: 0; z-index: 50; }
+    /* Glow Effect */
+    .glow { text-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff, 0 0 30px #00f2ff; }
+
+    /* Card Hover 3D Effect */
+    .card-hover:hover {
+      transform: translateY(-5px) rotateX(2deg) rotateY(5deg);
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+    }
+
+    /* Preloader */
+    #loader {
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+    }
+
+    /* Hamburger Menu Animation */
+    @keyframes slideInRight {
+      0% { transform: translateX(100%); opacity: 0; }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+    .animate-slideInRight { animation: slideInRight 0.5s ease-out forwards; }
   </style>
 </head>
 
@@ -29,12 +52,12 @@
   <nav class="fixed top-0 left-0 w-full bg-black/70 backdrop-blur-xl z-50 px-8 py-4 flex justify-between items-center border-b border-cyan-500/20">
     <h1 class="text-2xl font-bold text-cyan-400 glow">Charlie Web Engineer</h1>
 
-    <!-- Hamburger -->
-    <div class="md:hidden">
+    <!-- Hamburger Button -->
+    <div class="md:hidden relative z-50">
       <button id="menu-btn" class="flex flex-col justify-between w-6 h-5 focus:outline-none">
-        <span class="block h-0.5 w-full bg-cyan-400 transition-transform"></span>
-        <span class="block h-0.5 w-full bg-cyan-400 transition-transform"></span>
-        <span class="block h-0.5 w-full bg-cyan-400 transition-transform"></span>
+        <span class="block h-0.5 w-full bg-cyan-400 transition-transform origin-center"></span>
+        <span class="block h-0.5 w-full bg-cyan-400 transition-transform origin-center"></span>
+        <span class="block h-0.5 w-full bg-cyan-400 transition-transform origin-center"></span>
       </button>
     </div>
 
@@ -46,11 +69,12 @@
     </div>
   </nav>
 
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden fixed top-16 right-0 bg-black/90 w-2/3 h-screen p-8 flex flex-col gap-6 z-40">
-    <a href="#about" class="text-white hover:text-cyan-400 text-xl transition">About</a>
-    <a href="#projects" class="text-white hover:text-cyan-400 text-xl transition">Projects</a>
-    <a href="#contact" class="text-white hover:text-cyan-400 text-xl transition">Contact</a>
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu" class="hidden fixed top-0 right-0 w-full h-full bg-black/95 backdrop-blur-lg flex-col justify-center items-center gap-12 z-40 transition-transform duration-500">
+    <button id="menu-close" class="absolute top-8 right-8 text-cyan-400 text-4xl font-bold hover:text-white transition">×</button>
+    <a href="#about" class="text-4xl text-cyan-400 hover:text-white glow transition">About</a>
+    <a href="#projects" class="text-4xl text-cyan-400 hover:text-white glow transition">Projects</a>
+    <a href="#contact" class="text-4xl text-cyan-400 hover:text-white glow transition">Contact</a>
   </div>
 
   <!-- HERO SECTION -->
@@ -148,9 +172,19 @@
     AOS.init({ duration: 1000, easing: 'ease-in-out', once: true });
 
     // Mobile Hamburger toggle
-    const btn = document.getElementById('menu-btn');
-    const menu = document.getElementById('mobile-menu');
-    btn.addEventListener('click', () => { menu.classList.toggle('hidden'); });
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuClose = document.getElementById('menu-close');
+
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.remove('hidden');
+      mobileMenu.classList.add('flex', 'animate-slideInRight');
+    });
+
+    menuClose.addEventListener('click', () => {
+      mobileMenu.classList.remove('flex', 'animate-slideInRight');
+      mobileMenu.classList.add('hidden');
+    });
 
     // Three.js 3D Cube
     const scene = new THREE.Scene();
