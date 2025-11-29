@@ -34,6 +34,10 @@
     easing: 'ease-in-out', // easing
     once: true, // animate only once
   });
+  window.addEventListener('load', () => {
+    document.getElementById('loader').style.display = 'none';
+  });
+
 </script>
   <!-- HERO SECTION -->
   <section class="px-8 pt-32 pb-24 text-center">
@@ -138,6 +142,9 @@
       Contact Me
     </a>
   </section>
+<div id="loader" class="fixed inset-0 bg-black flex justify-center items-center z-50">
+  <div class="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+</div>
 
   <!-- FOOTER -->
   <footer class="text-center py-10 text-gray-500 border-t border-cyan-500/20">
