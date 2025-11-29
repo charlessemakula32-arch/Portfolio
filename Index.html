@@ -1,100 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Charlie Web Engineer</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Neon Glow Effect -->
+  <style>
+    .glow {
+      text-shadow: 0 0 15px #00f2ff, 0 0 25px #00f2ff;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+    }
+  </style>
 </head>
 
-<body class="bg-white text-black">
+<body class="bg-black text-white overflow-x-hidden">
 
-  <!-- NAV -->
-  <nav class="flex justify-between items-center px-8 py-5 border-b">
-    <h1 class="text-2xl font-semibold">Charlie Web Engineer</h1>
-    <button class="px-4 py-2 border rounded-lg hover:bg-black hover:text-white transition">Contact</button>
+  <!-- NAV BAR -->
+  <nav class="fixed top-0 left-0 w-full bg-black/70 backdrop-blur-xl z-50 px-8 py-4 flex justify-between items-center border-b border-cyan-500/20">
+    <h1 class="text-2xl font-bold text-cyan-400 glow">Charlie Web Engineer</h1>
+    <a href="#contact" class="px-5 py-2 border border-cyan-500 rounded-lg hover:bg-cyan-500 hover:text-black transition">
+      Contact
+    </a>
   </nav>
 
-  <!-- HERO -->
-  <section class="px-8 py-20 text-center">
-    <h2 class="text-5xl font-bold leading-tight">
-      I Build Clean, Modern & Professional<br />
-      <span class="text-gray-600">Web Experiences</span>
+  <!-- HERO SECTION -->
+  <section class="px-8 pt-32 pb-24 text-center">
+    <h2 class="text-5xl md:text-6xl font-extrabold leading-tight glow">
+      Futuristic Web Experiences  
     </h2>
-    <p class="mt-5 text-lg text-gray-600">Premium website engineering for global brands.</p>
+    <p class="mt-6 text-lg text-gray-300">
+      I design and develop high-tech, high-speed, visually stunning websites with premium UI/UX.
+    </p>
 
-    <div class="mt-8 flex justify-center gap-4">
-      <a href="#" class="px-6 py-3 bg-black text-white rounded-lg hover:opacity-80 transition">Hire Me</a>
-      <a href="#" class="px-6 py-3 border rounded-lg hover:bg-gray-100 transition">View Projects</a>
+    <div class="mt-10 flex justify-center gap-4">
+      <a href="#projects" class="px-6 py-3 bg-cyan-400 text-black rounded-lg hover:bg-cyan-300 transition font-semibold">View Projects</a>
+      <a href="#contact" class="px-6 py-3 border border-cyan-400 rounded-lg hover:bg-cyan-400 hover:text-black transition">Hire Me</a>
+    </div>
+
+    <!-- HERO IMAGE -->
+    <div class="mt-14 flex justify-center">
+      <img src="YOUR-IMAGE-HERE.jpg"
+           class="w-full md:w-2/3 rounded-xl shadow-cyan-500/40 shadow-xl"
+           alt="Charlie Web Engineer Hero Image">
     </div>
   </section>
 
-  <!-- ABOUT -->
-  <section class="px-8 py-20 grid md:grid-cols-2 gap-10 items-center">
-    <img src="https://via.placeholder.com/500x400" class="rounded-xl shadow" />
+  <!-- ABOUT SECTION -->
+  <section id="about" class="px-8 py-24 grid md:grid-cols-2 gap-12 items-center">
+
+    <!-- YOUR PHOTO -->
+    <img src="YOUR-PROFILE-IMAGE.jpg"
+      class="rounded-xl shadow-xl shadow-cyan-500/30"
+      alt="Charlie Portrait">
+
     <div>
-      <h3 class="text-3xl font-semibold mb-4">About Me</h3>
-      <p class="text-gray-600 leading-relaxed">
-        I am Charlie, a web engineer who focuses on premium design, clean code,
-        and world-class digital experiences. I build websites that are fast,
-        modern, responsive, and brand-ready for international clients.
+      <h3 class="text-3xl font-bold text-cyan-400 mb-4 glow">About Me</h3>
+      <p class="text-gray-300 leading-relaxed text-lg">
+        I'm Charlie, a professional web engineer specializing in modern, clean, and futuristic interfaces.
+        My design approach is deeply rooted in UI/UX principles: clarity, simplicity, flow, and visual impact.
+        I build scalable websites with high performance, stunning visuals, and strong branding identity.
+      </p>
+
+      <p class="text-gray-400 mt-4">
+        My goal is to create **world-class digital experiences** that feel smooth, intelligent, and advanced.
       </p>
     </div>
   </section>
 
   <!-- SERVICES -->
-  <section class="px-8 py-20">
-    <h3 class="text-3xl font-semibold text-center mb-12">Services</h3>
+  <section class="px-8 py-24 bg-black">
+    <h3 class="text-3xl font-bold text-center text-cyan-400 mb-14 glow">What I Do</h3>
 
     <div class="grid md:grid-cols-3 gap-10">
-      <div class="p-8 border rounded-xl hover:shadow-xl transition">
-        <h4 class="text-xl font-semibold mb-3">Web Development</h4>
-        <p class="text-gray-600">Modern and responsive websites built with clean code.</p>
-      </div>
-      <div class="p-8 border rounded-xl hover:shadow-xl transition">
+
+      <div class="p-8 bg-black/40 border border-cyan-500/30 rounded-xl card-hover transition">
         <h4 class="text-xl font-semibold mb-3">UI/UX Design</h4>
-        <p class="text-gray-600">Minimal, premium, fast-loading user interfaces.</p>
+        <p class="text-gray-400">Human-centered design built for clarity, engagement, and modern aesthetics.</p>
       </div>
-      <div class="p-8 border rounded-xl hover:shadow-xl transition">
+
+      <div class="p-8 bg-black/40 border border-cyan-500/30 rounded-xl card-hover transition">
+        <h4 class="text-xl font-semibold mb-3">Frontend Engineering</h4>
+        <p class="text-gray-400">Clean, fast, and responsive designs using modern frameworks & TailwindCSS.</p>
+      </div>
+
+      <div class="p-8 bg-black/40 border border-cyan-500/30 rounded-xl card-hover transition">
         <h4 class="text-xl font-semibold mb-3">Brand Websites</h4>
-        <p class="text-gray-600">Corporate-grade websites ready for global brands.</p>
+        <p class="text-gray-400">High-end websites that increase trust, credibility, and conversions.</p>
       </div>
+
     </div>
   </section>
 
   <!-- PROJECTS -->
-  <section class="px-8 py-20 bg-gray-50">
-    <h3 class="text-3xl font-semibold text-center mb-12">Recent Projects</h3>
+  <section id="projects" class="px-8 py-24">
+    <h3 class="text-3xl font-bold text-center text-cyan-400 mb-12 glow">Recent Work</h3>
 
     <div class="grid md:grid-cols-3 gap-10">
-      <div class="bg-white rounded-xl shadow p-5">
-        <img src="https://via.placeholder.com/400x260" class="rounded-lg mb-4" />
-        <h4 class="font-semibold text-lg">Project One</h4>
+
+      <div class="bg-black/40 border border-cyan-500/20 rounded-xl p-5 card-hover transition">
+        <img src="YOUR-PROJECT-1.jpg" class="rounded-lg mb-4">
+        <h4 class="font-semibold text-lg">Futuristic Brand Site</h4>
       </div>
 
-      <div class="bg-white rounded-xl shadow p-5">
-        <img src="https://via.placeholder.com/400x260" class="rounded-lg mb-4" />
-        <h4 class="font-semibold text-lg">Project Two</h4>
+      <div class="bg-black/40 border border-cyan-500/20 rounded-xl p-5 card-hover transition">
+        <img src="YOUR-PROJECT-2.jpg" class="rounded-lg mb-4">
+        <h4 class="font-semibold text-lg">Neon UI Portfolio</h4>
       </div>
 
-      <div class="bg-white rounded-xl shadow p-5">
-        <img src="https://via.placeholder.com/400x260" class="rounded-lg mb-4" />
-        <h4 class="font-semibold text-lg">Project Three</h4>
+      <div class="bg-black/40 border border-cyan-500/20 rounded-xl p-5 card-hover transition">
+        <img src="YOUR-PROJECT-3.jpg" class="rounded-lg mb-4">
+        <h4 class="font-semibold text-lg">Tech Startup Landing Page</h4>
       </div>
+
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <section class="px-8 py-20 text-center">
-    <h3 class="text-3xl font-semibold mb-5">Let's Work Together</h3>
-    <p class="text-gray-600 mb-8">I build websites for modern, global brands.</p>
-    <a href="#" class="px-8 py-3 bg-black text-white rounded-lg hover:opacity-80 transition">
+  <!-- CONTACT FORM -->
+  <section id="contact" class="px-8 py-24 bg-black/60 text-center">
+    <h3 class="text-3xl font-bold text-cyan-400 mb-6 glow">Let's Work Together</h3>
+
+    <p class="text-gray-300 mb-10">Ready to build something amazing?</p>
+
+    <a href="mailto:semakulacharles16@gmail.com"
+       class="px-10 py-4 bg-cyan-400 text-black font-semibold rounded-lg hover:bg-cyan-300 transition">
       Contact Me
     </a>
   </section>
 
   <!-- FOOTER -->
-  <footer class="text-center py-8 border-t text-gray-600">
+  <footer class="text-center py-10 text-gray-500 border-t border-cyan-500/20">
     © 2025 Charlie Web Engineer — All Rights Reserved
   </footer>
 
