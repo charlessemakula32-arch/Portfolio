@@ -10,9 +10,8 @@
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 
-  <!-- Neon Glow, 3D Card & Hamburger CSS -->
   <style>
-    /* Glow Effect */
+    /* Neon Glow */
     .glow { text-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff, 0 0 30px #00f2ff; }
 
     /* Card Hover 3D Effect */
@@ -32,13 +31,6 @@
       z-index: 50;
     }
 
-    /* Hamburger Menu Animation */
-    @keyframes slideInRight {
-      0% { transform: translateX(100%); opacity: 0; }
-      100% { transform: translateX(0); opacity: 1; }
-    }
-    .animate-slideInRight { animation: slideInRight 0.5s ease-out forwards; }
-
     /* Hamburger Icon Neon Animation */
     .hamburger span {
       display: block;
@@ -53,27 +45,41 @@
     .hamburger.open span:nth-child(1) {
       transform: rotate(45deg) translate(5px, 5px);
     }
-    .hamburger.open span:nth-child(2) {
-      opacity: 0;
-    }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) {
       transform: rotate(-45deg) translate(5px, -5px);
     }
+
+    /* Mobile Menu Animation */
+    @keyframes slideInRight { 0% { transform: translateX(100%); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+    .animate-slideInRight { animation: slideInRight 0.5s ease-out forwards; }
+
+    /* Sequential menu link slide-in */
+    .menu-link { opacity: 0; transform: translateX(50px); animation-fill-mode: forwards; }
+    .menu-link:nth-child(2) { animation-delay: 0.1s; }
+    .menu-link:nth-child(3) { animation-delay: 0.2s; }
+    .menu-link:nth-child(4) { animation-delay: 0.3s; }
+    .menu-link:nth-child(5) { animation-delay: 0.4s; }
+    .menu-link.show { animation: slideIn 0.5s ease forwards; }
+    @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+
+    /* Hamburger link hover glow underline */
+    .menu-link:hover { text-decoration: underline; text-decoration-color: #00f2ff; text-underline-offset: 4px; }
   </style>
 </head>
 
-<body class="bg-black text-white overflow-x-hidden">
+<body class="bg-black text-white overflow-x-hidden" id="top">
 
   <!-- PRELOADER -->
   <div id="loader">
     <div class="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
   </div>
 
-  <!-- NAV BAR -->
+  <!-- NAVBAR -->
   <nav class="fixed top-0 left-0 w-full bg-black/70 backdrop-blur-xl z-50 px-8 py-4 flex justify-between items-center border-b border-cyan-500/20">
     <h1 class="text-2xl font-bold text-cyan-400 glow">Charlie Web Engineer</h1>
 
-    <!-- Hamburger Button -->
+    <!-- Hamburger -->
     <div class="md:hidden relative z-50">
       <button id="menu-btn" class="hamburger flex flex-col justify-between h-5 focus:outline-none">
         <span></span>
@@ -82,7 +88,7 @@
       </button>
     </div>
 
-    <!-- Desktop menu -->
+    <!-- Desktop Menu -->
     <div class="hidden md:flex gap-6 items-center">
       <a href="#about" class="hover:text-cyan-400 transition">About</a>
       <a href="#projects" class="hover:text-cyan-400 transition">Projects</a>
@@ -90,12 +96,13 @@
     </div>
   </nav>
 
-  <!-- Mobile Menu Overlay (Half Screen) -->
-  <div id="mobile-menu" class="hidden fixed top-0 right-0 w-full h-1/2 bg-black/95 backdrop-blur-lg flex-col justify-center items-center gap-12 z-40 transition-transform duration-500">
+  <!-- MOBILE MENU HALF SCREEN -->
+  <div id="mobile-menu" class="hidden fixed top-0 right-0 w-full h-1/2 bg-black/95 backdrop-blur-lg flex-col justify-center items-center gap-6 z-40 transition-transform duration-500">
     <button id="menu-close" class="absolute top-4 right-6 text-cyan-400 text-4xl font-bold hover:text-white transition">×</button>
-    <a href="#about" class="text-3xl text-cyan-400 hover:text-white glow transition">About</a>
-    <a href="#projects" class="text-3xl text-cyan-400 hover:text-white glow transition">Projects</a>
-    <a href="#contact" class="text-3xl text-cyan-400 hover:text-white glow transition">Contact</a>
+    <a href="#top" class="text-3xl text-cyan-400 hover:text-white glow transition menu-link">Home</a>
+    <a href="#about" class="text-3xl text-cyan-400 hover:text-white glow transition menu-link">About</a>
+    <a href="#projects" class="text-3xl text-cyan-400 hover:text-white glow transition menu-link">Projects</a>
+    <a href="#contact" class="text-3xl text-cyan-400 hover:text-white glow transition menu-link">Contact</a>
   </div>
 
   <!-- HERO SECTION -->
@@ -110,13 +117,13 @@
       <a href="#contact" class="px-6 py-3 border border-cyan-400 rounded-lg hover:bg-cyan-400 hover:text-black transition">Hire Me</a>
     </div>
 
-    <!-- HERO IMAGE + 3D Cube -->
+    <!-- Hero Image -->
     <div class="mt-14 flex justify-center relative" data-aos="zoom-in" data-aos-delay="600">
       <img src="IMG_20251114_192809_223.webp" class="w-full md:w-2/3 h-80 object-cover rounded-xl shadow-cyan-500/40 shadow-xl">
     </div>
   </section>
 
-  <!-- ABOUT SECTION -->
+  <!-- ABOUT -->
   <section id="about" class="px-8 py-24 grid md:grid-cols-2 gap-12 items-center">
     <img src="IMG_20251114_192809_223.webp" class="rounded-xl shadow-xl shadow-cyan-500/30" data-aos="fade-right">
     <div data-aos="fade-left">
@@ -195,17 +202,25 @@
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     const menuClose = document.getElementById('menu-close');
+    const menuLinks = document.querySelectorAll('.menu-link');
 
     menuBtn.addEventListener('click', () => {
       menuBtn.classList.toggle('open');
       mobileMenu.classList.remove('hidden');
       mobileMenu.classList.add('flex', 'animate-slideInRight');
+
+      // Animate links sequentially
+      menuLinks.forEach((link, i) => {
+        link.classList.remove('show');
+        setTimeout(() => link.classList.add('show'), i * 100);
+      });
     });
 
     menuClose.addEventListener('click', () => {
       menuBtn.classList.remove('open');
       mobileMenu.classList.remove('flex', 'animate-slideInRight');
       mobileMenu.classList.add('hidden');
+      menuLinks.forEach(link => link.classList.remove('show'));
     });
   </script>
 </body>
