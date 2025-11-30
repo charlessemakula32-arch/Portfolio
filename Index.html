@@ -1,227 +1,371 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Charlie Web Engineer</title>
+
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- AOS Scroll Animations -->
+  <!-- AOS (scroll animations) -->
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 
+  <!-- Three.js (3D) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js"></script>
+
   <style>
-    /* Neon Glow */
-    .glow { text-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff, 0 0 30px #00f2ff; }
+    /* ---------- Visual theme ---------- */
+    :root { --neon: #00f2ff; --neon-weak: rgba(0,242,255,0.14); }
+    html,body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
 
-    /* Card Hover 3D Effect */
-    .card-hover:hover {
-      transform: translateY(-5px) rotateX(2deg) rotateY(5deg);
-      box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
-    }
+    /* Glow effect used across the site */
+    .glow { text-shadow: 0 0 8px var(--neon), 0 0 18px var(--neon); }
 
-    /* Preloader */
+    /* Card hover 3D */
+    .card-hover { transition: transform .35s ease, box-shadow .35s ease; transform-origin: center; }
+    .card-hover:hover { transform: translateY(-6px) rotateX(2deg) rotateY(6deg); box-shadow: 0 10px 40px rgba(0,242,255,0.12); }
+
+    /* Preloader full screen */
     #loader {
-      background: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: fixed;
-      inset: 0;
-      z-index: 50;
+      position: fixed; inset: 0; z-index: 60; display:flex; align-items:center; justify-content:center;
+      background: linear-gradient(180deg,#000000 0%, #020617 100%);
     }
+    .loader-ring { width:64px; height:64px; border-radius:999px; border:6px solid var(--neon); border-top-color: transparent; animation: spin 1s linear infinite; box-shadow: 0 0 20px var(--neon); }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Hamburger Icon Neon Animation */
-    .hamburger span {
-      display: block;
-      height: 2px;
-      width: 24px;
-      margin: 5px 0;
-      background: #00f2ff;
-      border-radius: 1px;
-      transition: 0.4s;
-      box-shadow: 0 0 5px #00f2ff, 0 0 10px #00f2ff;
-    }
-    .hamburger.open span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) {
-      transform: rotate(-45deg) translate(5px, -5px);
-    }
+    /* Hamburger / Icon animation */
+    .hamburger span { display:block; width:24px; height:2px; margin:4px 0; background:var(--neon); border-radius:2px; transition: .35s; box-shadow: 0 0 6px var(--neon); }
+    .hamburger.open span:nth-child(1){ transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2){ opacity:0; transform: translateX(-8px); }
+    .hamburger.open span:nth-child(3){ transform: rotate(-45deg) translate(5px,-5px); }
 
-    /* Mobile Menu Animation */
-    @keyframes slideInRight { 0% { transform: translateX(100%); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
-    .animate-slideInRight { animation: slideInRight 0.5s ease-out forwards; }
+    /* Mobile menu overlay (half screen) */
+    .mobile-overlay { position: fixed; top:0; right:0; width:100%; height:50vh; z-index:55; display:flex; flex-direction:column; align-items:center; justify-content:center; background: linear-gradient(180deg, rgba(0,0,0,0.96), rgba(0,0,0,0.92)); backdrop-filter: blur(6px); }
+    .mobile-overlay a { color: var(--neon); text-decoration:none; font-weight:600; }
 
-    /* Sequential menu link slide-in */
-    .menu-link { opacity: 0; transform: translateX(50px); animation-fill-mode: forwards; }
-    .menu-link:nth-child(2) { animation-delay: 0.1s; }
-    .menu-link:nth-child(3) { animation-delay: 0.2s; }
-    .menu-link:nth-child(4) { animation-delay: 0.3s; }
-    .menu-link:nth-child(5) { animation-delay: 0.4s; }
-    .menu-link.show { animation: slideIn 0.5s ease forwards; }
-    @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+    /* slide-in for overlay */
+    @keyframes slideInRight { 0%{ transform: translateX(100%); opacity:0 } 100%{ transform: translateX(0); opacity:1 } }
+    .animate-slideInRight { animation: slideInRight .45s ease-out forwards; }
 
-    /* Hamburger link hover glow underline */
-    .menu-link:hover { text-decoration: underline; text-decoration-color: #00f2ff; text-underline-offset: 4px; }
+    /* Sequential menu links (initial hidden) */
+    .menu-link { opacity:0; transform: translateX(36px); animation-fill-mode:forwards; }
+    .menu-link.show { animation: menuSlide .45s cubic-bezier(.2,.9,.2,1) forwards; }
+    @keyframes menuSlide { to { opacity:1; transform: translateX(0); } }
+
+    /* Menu link hover underline glow */
+    .menu-link:hover { text-decoration-line: underline; text-decoration-thickness:2px; text-underline-offset:6px; text-decoration-color: var(--neon); }
+
+    /* small helper */
+    .glass { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); }
   </style>
 </head>
 
-<body class="bg-black text-white overflow-x-hidden" id="top">
-
+<body class="bg-black text-white" id="top">
   <!-- PRELOADER -->
   <div id="loader">
-    <div class="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+    <div class="loader-ring" aria-hidden="true"></div>
   </div>
 
-  <!-- NAVBAR -->
-  <nav class="fixed top-0 left-0 w-full bg-black/70 backdrop-blur-xl z-50 px-8 py-4 flex justify-between items-center border-b border-cyan-500/20">
-    <h1 class="text-2xl font-bold text-cyan-400 glow">Charlie Web Engineer</h1>
+  <!-- NAV -->
+  <header class="fixed top-0 left-0 w-full z-50">
+    <div class="max-w-6xl mx-auto px-5">
+      <div class="flex items-center justify-between h-16">
+        <a href="#top" class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-400 to-indigo-700 text-black font-extrabold">CW</div>
+          <div class="hidden sm:block">
+            <div class="text-sm font-semibold">Charlie Web Engineer</div>
+            <div class="text-xs text-gray-400">Futuristic Web Experiences</div>
+          </div>
+        </a>
 
-    <!-- Hamburger -->
-    <div class="md:hidden relative z-50">
-      <button id="menu-btn" class="hamburger flex flex-col justify-between h-5 focus:outline-none">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+        <!-- hamburger visible on mobile -->
+        <div class="md:hidden">
+          <button id="menu-btn" aria-label="Open menu" class="hamburger focus:outline-none" type="button">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+
+        <!-- desktop links -->
+        <nav class="hidden md:flex items-center gap-8 text-gray-300">
+          <a href="#about" class="hover:text-cyan-300 transition">About</a>
+          <a href="#projects" class="hover:text-cyan-300 transition">Projects</a>
+          <a href="#contact" class="hover:text-cyan-300 transition">Contact</a>
+        </nav>
+      </div>
     </div>
+  </header>
 
-    <!-- Desktop Menu -->
-    <div class="hidden md:flex gap-6 items-center">
-      <a href="#about" class="hover:text-cyan-400 transition">About</a>
-      <a href="#projects" class="hover:text-cyan-400 transition">Projects</a>
-      <a href="#contact" class="hover:text-cyan-400 transition">Contact</a>
+  <!-- MOBILE OVERLAY (initially hidden) -->
+  <div id="mobile-menu" class="hidden">
+    <div class="mobile-overlay glass animate-slideInRight">
+      <button id="menu-close" aria-label="Close menu" class="absolute top-4 right-6 text-3xl text-cyan-400 hover:text-white">×</button>
+
+      <!-- links: include menu-link class for animation & 'Home' -->
+      <a href="#top" class="menu-link text-2xl sm:text-3xl block mb-3 glow">Home</a>
+      <a href="#about" class="menu-link text-2xl sm:text-3xl block mb-3 glow">About</a>
+      <a href="#projects" class="menu-link text-2xl sm:text-3xl block mb-3 glow">Projects</a>
+      <a href="#contact" class="menu-link text-2xl sm:text-3xl block mb-3 glow">Contact</a>
     </div>
-  </nav>
-
-  <!-- MOBILE MENU HALF SCREEN -->
-  <div id="mobile-menu" class="hidden fixed top-0 right-0 w-full h-1/2 bg-black/95 backdrop-blur-lg flex-col justify-center items-center gap-6 z-40 transition-transform duration-500">
-    <button id="menu-close" class="absolute top-4 right-6 text-cyan-400 text-4xl font-bold hover:text-white transition">×</button>
-    <a href="#top" class="text-3xl text-cyan-400 hover:text-white glow transition menu-link">Home</a>
-    <a href="#about" class="text-3xl text-cyan-400 hover:text-white glow transition menu-link">About</a>
-    <a href="#projects" class="text-3xl text-cyan-400 hover:text-white glow transition menu-link">Projects</a>
-    <a href="#contact" class="text-3xl text-cyan-400 hover:text-white glow transition menu-link">Contact</a>
   </div>
 
-  <!-- HERO SECTION -->
-  <section class="px-8 pt-32 pb-24 text-center">
-    <h2 class="text-5xl md:text-6xl font-extrabold leading-tight glow" data-aos="fade-down">Futuristic Web Experiences</h2>
-    <p class="mt-6 text-lg text-gray-300" data-aos="fade-up" data-aos-delay="200">
-      I design and develop high-tech, visually stunning websites with premium UI/UX.
-    </p>
+  <!-- MAIN -->
+  <main class="pt-20">
 
-    <div class="mt-10 flex justify-center gap-4" data-aos="fade-up" data-aos-delay="400">
-      <a href="#projects" class="px-6 py-3 bg-cyan-400 text-black rounded-lg hover:bg-cyan-300 transition font-semibold">View Projects</a>
-      <a href="#contact" class="px-6 py-3 border border-cyan-400 rounded-lg hover:bg-cyan-400 hover:text-black transition">Hire Me</a>
-    </div>
+    <!-- HERO -->
+    <section class="max-w-6xl mx-auto px-5 py-12 text-center">
+      <div data-aos="fade-down">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight glow">Futuristic Web Experiences</h1>
+        <p class="mt-4 text-gray-300 max-w-2xl mx-auto">I design and build high-performance, visually stunning websites and products with professional UI/UX — focused on conversions, speed and brand trust.</p>
 
-    <!-- Hero Image -->
-    <div class="mt-14 flex justify-center relative" data-aos="zoom-in" data-aos-delay="600">
-      <img src="IMG_20251114_192809_223.webp" class="w-full md:w-2/3 h-80 object-cover rounded-xl shadow-cyan-500/40 shadow-xl">
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about" class="px-8 py-24 grid md:grid-cols-2 gap-12 items-center">
-    <img src="IMG_20251114_192809_223.webp" class="rounded-xl shadow-xl shadow-cyan-500/30" data-aos="fade-right">
-    <div data-aos="fade-left">
-      <h3 class="text-3xl font-bold text-cyan-400 mb-4 glow">About Me</h3>
-      <p class="text-gray-300 leading-relaxed text-lg">
-        I'm Charlie, a professional web engineer specializing in modern, clean, and futuristic interfaces.
-        I build scalable websites with high performance, stunning visuals, and strong branding identity.
-      </p>
-      <p class="text-gray-400 mt-4">
-        My goal is to create <strong>world-class digital experiences</strong> that feel smooth, intelligent, and advanced.
-      </p>
-    </div>
-  </section>
-
-  <!-- SERVICES -->
-  <section class="px-8 py-24 bg-black">
-    <h3 class="text-3xl font-bold text-center text-cyan-400 mb-14 glow" data-aos="fade-up">What I Do</h3>
-    <div class="grid md:grid-cols-3 gap-10">
-      <div class="p-8 bg-black/40 border border-cyan-500/30 rounded-xl card-hover transition" data-aos="fade-up" data-aos-delay="100">
-        <h4 class="text-xl font-semibold mb-3">UI/UX Design</h4>
-        <p class="text-gray-400">Human-centered design built for clarity, engagement, and modern aesthetics.</p>
+        <div class="mt-6 flex justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
+          <a href="#projects" class="px-6 py-3 bg-cyan-400 text-black rounded-lg font-semibold shadow-lg hover:bg-cyan-300">View Projects</a>
+          <a href="#contact" class="px-6 py-3 border border-cyan-400 rounded-lg hover:bg-cyan-400 hover:text-black transition">Hire Me</a>
+        </div>
       </div>
-      <div class="p-8 bg-black/40 border border-cyan-500/30 rounded-xl card-hover transition" data-aos="fade-up" data-aos-delay="200">
-        <h4 class="text-xl font-semibold mb-3">Frontend Engineering</h4>
-        <p class="text-gray-400">Clean, fast, and responsive designs using modern frameworks & TailwindCSS.</p>
-      </div>
-      <div class="p-8 bg-black/40 border border-cyan-500/30 rounded-xl card-hover transition" data-aos="fade-up" data-aos-delay="300">
-        <h4 class="text-xl font-semibold mb-3">Brand Websites</h4>
-        <p class="text-gray-400">High-end websites that increase trust, credibility, and conversions.</p>
-      </div>
-    </div>
-  </section>
 
-  <!-- PROJECTS -->
-  <section id="projects" class="px-8 py-24">
-    <h3 class="text-3xl font-bold text-center text-cyan-400 mb-12 glow" data-aos="fade-up">Recent Work</h3>
-    <div class="grid md:grid-cols-3 gap-10">
-      <div class="bg-black/40 border border-cyan-500/20 rounded-xl p-5 card-hover transition" data-aos="flip-left">
-        <img src="IMG_20251114_192809_223.webp" class="rounded-lg mb-4">
-        <h4 class="font-semibold text-lg">Futuristic Brand Site</h4>
-      </div>
-      <div class="bg-black/40 border border-cyan-500/20 rounded-xl p-5 card-hover transition" data-aos="flip-left" data-aos-delay="100">
-        <img src="IMG_20251114_192809_223.webp" class="rounded-lg mb-4">
-        <h4 class="font-semibold text-lg">Neon UI Portfolio</h4>
-      </div>
-      <div class="bg-black/40 border border-cyan-500/20 rounded-xl p-5 card-hover transition" data-aos="flip-left" data-aos-delay="200">
-        <img src="IMG_20251114_192809_223.webp" class="rounded-lg mb-4">
-        <h4 class="font-semibold text-lg">Tech Startup Landing Page</h4>
-      </div>
-    </div>
-  </section>
+      <!-- hero visual: your image and 3D canvas -->
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+        <!-- image -->
+        <div class="order-2 md:order-1" data-aos="zoom-in">
+          <img src="IMG_20251114_192809_223.webp" alt="Charlie - hero" class="w-full h-72 md:h-80 object-cover rounded-xl shadow-[0_20px_60px_rgba(0,242,255,0.06)]" />
+        </div>
 
-  <!-- CONTACT -->
-  <section id="contact" class="px-8 py-24 bg-black/60 text-center" data-aos="fade-up">
-    <h3 class="text-3xl font-bold text-cyan-400 mb-6 glow">Let's Work Together</h3>
-    <p class="text-gray-300 mb-10">Ready to build something amazing?</p>
-    <a href="mailto:semakulacharles16@gmail.com" class="px-10 py-4 bg-cyan-400 text-black font-semibold rounded-lg hover:bg-cyan-300 transition">
-      Contact Me
-    </a>
-  </section>
+        <!-- three.js canvas -->
+        <div class="order-1 md:order-2" data-aos="zoom-in" id="three-wrap">
+          <canvas id="three-canvas" class="w-full h-72 md:h-80 rounded-xl"></canvas>
+        </div>
+      </div>
+    </section>
 
-  <!-- FOOTER -->
-  <footer class="text-center py-10 text-gray-500 border-t border-cyan-500/20">
-    © 2025 Charlie Web Engineer — All Rights Reserved
-  </footer>
+    <!-- ABOUT -->
+    <section id="about" class="max-w-6xl mx-auto px-5 py-12 grid md:grid-cols-2 gap-10 items-center">
+      <div data-aos="fade-right">
+        <img src="IMG_20251114_192809_223.webp" alt="Profile" class="w-full rounded-xl object-cover h-80 shadow-[0_20px_40px_rgba(0,242,255,0.04)]" />
+      </div>
 
-  <!-- Scripts -->
+      <div data-aos="fade-left">
+        <h2 class="text-2xl font-bold text-cyan-300 glow">About Charlie</h2>
+        <p class="mt-4 text-gray-300 leading-relaxed">
+          I'm Charlie — a web engineer focused on modern, futuristic UI/UX, performance-first front-ends, and production-ready websites that serve international clients.
+          I combine design, engineering and product thinking to deliver websites that convert and scale.
+        </p>
+
+        <ul class="mt-6 space-y-3 text-gray-400">
+          <li>● Performance-first frontends (Lighthouse & Core Web Vitals)</li>
+          <li>● Accessible, responsive, and brand-focused design</li>
+          <li>● Full-stack production readiness (APIs, Auth, Deploy)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="bg-black/30">
+      <div class="max-w-6xl mx-auto px-5 py-12">
+        <h3 class="text-2xl font-bold text-center text-cyan-300 glow" data-aos="fade-up">Services</h3>
+        <div class="mt-8 grid md:grid-cols-3 gap-6">
+          <div class="p-6 rounded-xl glass card-hover" data-aos="fade-up" data-aos-delay="80">
+            <h4 class="font-semibold text-lg">UI/UX Design</h4>
+            <p class="mt-2 text-gray-400">Human-centered interfaces, fast prototypes, and polished visual systems.</p>
+          </div>
+          <div class="p-6 rounded-xl glass card-hover" data-aos="fade-up" data-aos-delay="160">
+            <h4 class="font-semibold text-lg">Frontend Engineering</h4>
+            <p class="mt-2 text-gray-400">React, Next.js, Tailwind, performance tuning and modern workflows.</p>
+          </div>
+          <div class="p-6 rounded-xl glass card-hover" data-aos="fade-up" data-aos-delay="240">
+            <h4 class="font-semibold text-lg">Brand Websites</h4>
+            <p class="mt-2 text-gray-400">Corporate and product sites ready for global audiences and clients.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="max-w-6xl mx-auto px-5 py-12">
+      <h3 class="text-2xl font-bold text-center text-cyan-300 glow" data-aos="fade-up">Selected Work</h3>
+
+      <div class="mt-6 grid md:grid-cols-3 gap-6">
+        <!-- three main projects -->
+        <article class="rounded-xl overflow-hidden card-hover glass p-4" data-aos="flip-left">
+          <img src="IMG_20251114_192809_223.webp" alt="proj1" class="w-full h-44 object-cover rounded-lg mb-3" />
+          <h4 class="font-semibold">Futuristic Brand Site</h4>
+        </article>
+
+        <article class="rounded-xl overflow-hidden card-hover glass p-4" data-aos="flip-left" data-aos-delay="80">
+          <img src="IMG_20251114_192809_223.webp" alt="proj2" class="w-full h-44 object-cover rounded-lg mb-3" />
+          <h4 class="font-semibold">Neon UI Portfolio</h4>
+        </article>
+
+        <article class="rounded-xl overflow-hidden card-hover glass p-4" data-aos="flip-left" data-aos-delay="160">
+          <img src="IMG_20251114_192809_223.webp" alt="proj3" class="w-full h-44 object-cover rounded-lg mb-3" />
+          <h4 class="font-semibold">Tech Startup Landing</h4>
+        </article>
+      </div>
+
+      <!-- More Projects button -->
+      <div class="mt-8 flex justify-center">
+        <button id="more-projects-btn" class="px-6 py-3 bg-cyan-400 text-black rounded-xl font-semibold shadow-lg hover:bg-cyan-300 transition">More Projects</button>
+      </div>
+
+      <!-- Hidden extra projects -->
+      <div id="more-projects" class="mt-8 grid md:grid-cols-3 gap-6 hidden">
+        <article class="rounded-xl overflow-hidden card-hover glass p-4" data-aos="fade-up">
+          <img src="IMG_20251114_192809_223.webp" alt="proj4" class="w-full h-44 object-cover rounded-lg mb-3" />
+          <h4 class="font-semibold">E-commerce UI Kit</h4>
+        </article>
+        <article class="rounded-xl overflow-hidden card-hover glass p-4" data-aos="fade-up" data-aos-delay="80">
+          <img src="IMG_20251114_192809_223.webp" alt="proj5" class="w-full h-44 object-cover rounded-lg mb-3" />
+          <h4 class="font-semibold">Hotel Booking System</h4>
+        </article>
+        <article class="rounded-xl overflow-hidden card-hover glass p-4" data-aos="fade-up" data-aos-delay="160">
+          <img src="IMG_20251114_192809_223.webp" alt="proj6" class="w-full h-44 object-cover rounded-lg mb-3" />
+          <h4 class="font-semibold">Travel Tours Landing</h4>
+        </article>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="max-w-6xl mx-auto px-5 py-12 bg-black/20 rounded-xl">
+      <div class="text-center" data-aos="fade-up">
+        <h3 class="text-2xl font-bold text-cyan-300 glow">Let's Work Together</h3>
+        <p class="mt-3 text-gray-300">Reach me by phone or email — choose what works best for you.</p>
+
+        <div class="mt-6 flex flex-col sm:flex-row justify-center gap-4">
+          <!-- Phone (call) -->
+          <a href="tel:+256700295552" class="px-6 py-3 bg-cyan-400 text-black font-semibold rounded-lg shadow hover:bg-cyan-300 transition inline-flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h2l2 5-3 2v3l5 3 2-3 5 2v2a2 2 0 0 1-2 2h-1A16 16 0 0 1 3 5z" /></svg>
+            Call: 0700295552
+          </a>
+
+          <!-- Email -->
+          <a href="mailto:semakulacharles16@gmail.com" class="px-6 py-3 border border-cyan-400 rounded-lg hover:bg-cyan-400 hover:text-black transition inline-flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cyan-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12H8m0 0l4-4m-4 4l4 4" /></svg>
+            Email: semakulacharles16@gmail.com
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="max-w-6xl mx-auto px-5 py-8 text-center text-gray-400">
+      © 2025 Charlie Web Engineer — All Rights Reserved
+    </footer>
+  </main>
+
+  <!-- SCRIPTS: AOS init, loader, three.js, menu toggles, more-projects toggle -->
   <script>
-    // Hide loader
-    window.addEventListener('load', () => { document.getElementById('loader').style.display = 'none'; });
+    // Hide loader when page loaded
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('loader');
+      if (loader) loader.style.display = 'none';
+    });
 
-    // Initialize AOS
-    AOS.init({ duration: 1000, easing: 'ease-in-out', once: true });
+    // Init AOS
+    AOS.init({ duration: 900, easing: 'ease-in-out', once: true });
 
-    // Hamburger toggle with neon animation
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const menuClose = document.getElementById('menu-close');
-    const menuLinks = document.querySelectorAll('.menu-link');
+    /* ---------- three.js: simple neon cube ---------- */
+    (function initThree(){
+      try {
+        const wrap = document.getElementById('three-wrap');
+        const canvas = document.getElementById('three-canvas');
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        renderer.setPixelRatio(dpr);
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 
-    menuBtn.addEventListener('click', () => {
-      menuBtn.classList.toggle('open');
-      mobileMenu.classList.remove('hidden');
-      mobileMenu.classList.add('flex', 'animate-slideInRight');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(35, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+        camera.position.z = 4;
 
-      // Animate links sequentially
-      menuLinks.forEach((link, i) => {
-        link.classList.remove('show');
-        setTimeout(() => link.classList.add('show'), i * 100);
+        const geometry = new THREE.BoxGeometry(1.2, 1.2, 1.2);
+        const material = new THREE.MeshStandardMaterial({ color: 0x00f2ff, emissive: 0x00f2ff, metalness: .2, roughness: .2 });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        const light1 = new THREE.PointLight(0x00f2ff, 1.2, 10);
+        light1.position.set(2,2,3);
+        scene.add(light1);
+
+        const light2 = new THREE.AmbientLight(0x00222a, 0.4);
+        scene.add(light2);
+
+        function onResize(){
+          const w = canvas.clientWidth;
+          const h = canvas.clientHeight;
+          renderer.setSize(w, h, false);
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+        }
+        window.addEventListener('resize', onResize);
+
+        function animate(){
+          requestAnimationFrame(animate);
+          cube.rotation.x += 0.008;
+          cube.rotation.y += 0.01;
+          renderer.render(scene, camera);
+        }
+        animate();
+      } catch (e) {
+        console.warn('Three.js failed to initialize:', e);
+      }
+    })();
+
+    /* ---------- Mobile hamburger menu logic ---------- */
+    (function mobileMenu(){
+      const menuBtn = document.getElementById('menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const menuClose = document.getElementById('menu-close');
+      const menuLinks = document.querySelectorAll('#mobile-menu .menu-link');
+
+      function openMenu() {
+        menuBtn.classList.add('open');
+        mobileMenu.classList.remove('hidden');
+        mobileMenu.classList.add('flex','animate-slideInRight');
+        // reveal links one-by-one
+        menuLinks.forEach((link, i) => {
+          link.classList.remove('show');
+          setTimeout(() => link.classList.add('show'), 90 * (i+1));
+        });
+      }
+      function closeMenu() {
+        menuBtn.classList.remove('open');
+        mobileMenu.classList.remove('flex','animate-slideInRight');
+        mobileMenu.classList.add('hidden');
+        menuLinks.forEach(link => link.classList.remove('show'));
+      }
+
+      menuBtn && menuBtn.addEventListener('click', () => {
+        // toggle
+        const hidden = mobileMenu.classList.contains('hidden');
+        if (hidden) openMenu(); else closeMenu();
       });
-    });
+      menuClose && menuClose.addEventListener('click', closeMenu);
 
-    menuClose.addEventListener('click', () => {
-      menuBtn.classList.remove('open');
-      mobileMenu.classList.remove('flex', 'animate-slideInRight');
-      mobileMenu.classList.add('hidden');
-      menuLinks.forEach(link => link.classList.remove('show'));
-    });
+      // Close menu when clicking a link (for good UX)
+      menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          closeMenu();
+        });
+      });
+    })();
+
+    /* ---------- More Projects toggle ---------- */
+    (function moreProjectsToggle(){
+      const btn = document.getElementById('more-projects-btn');
+      const more = document.getElementById('more-projects');
+      btn && btn.addEventListener('click', () => {
+        if (more.classList.contains('hidden')) {
+          more.classList.remove('hidden');
+          btn.textContent = 'Show Less';
+          // animate newly visible items
+          AOS.refresh(); // refresh AOS so animations run
+        } else {
+          more.classList.add('hidden');
+          btn.textContent = 'More Projects';
+        }
+      });
+    })();
   </script>
 </body>
 </html>
