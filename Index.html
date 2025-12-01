@@ -42,40 +42,43 @@
     }
 
     /* ---------- Hamburger (Glass Capsule) ---------- */
-    .hamburger {
-      padding: 10px 12px;
-      border-radius: 14px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      background: rgba(0, 15, 25, 0.55);
-      border: 1px solid rgba(0,255,255,0.06);
-      box-shadow: 0 6px 20px rgba(0,255,255,0.08);
-      transition: transform .28s ease, background .28s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .hamburger:hover { transform: scale(1.04); }
+    /* --------- HAMBURGER (Neon 3-line Base) --------- */
+.hamburger {
+  padding: 10px 12px;
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  background: rgba(0, 15, 25, 0.55);
+  border: 1px solid rgba(0,255,255,0.15);
+  box-shadow: 0 4px 18px rgba(0,255,255,0.12);
+  transition: 0.35s ease;
+  cursor: pointer;
+}
 
-    .hamburger span {
-      display:block;
-      width:26px;
-      height:2px;
-      margin:4px 0;
-      background:var(--neon);
-      border-radius:4px;
-      box-shadow:0 0 8px var(--neon);
-      transition: all .3s ease;
-    }
-    .hamburger.open span:nth-child(1){
-      transform: rotate(45deg) translate(6px,6px);
-    }
-    .hamburger.open span:nth-child(2){
-      opacity:0; transform: translateX(-12px);
-    }
-    .hamburger.open span:nth-child(3){
-      transform: rotate(-45deg) translate(6px,-6px);
-    }
+/* Hamburger Lines */
+.hamburger span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  margin: 6px 0;
+  background: var(--neon);
+  border-radius: 3px;
+  transition: 0.4s ease;
+  box-shadow: 0 0 8px var(--neon);
+}
+
+/* --------- ANIMATION (Morph to X when open) --------- */
+.hamburger.open span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
 
     /* ---------- Mobile overlay (half-screen glass) ---------- */
     .mobile-overlay {
@@ -417,6 +420,14 @@
         }
       });
     })();
+    const menuBtn = document.getElementById("menu-btn");
+const mobileMenu = document.getElementById("mobile-menu");
+
+menuBtn.addEventListener("click", () => {
+  menuBtn.classList.toggle("open");
+  mobileMenu.classList.toggle("show");
+});
+
   </script>
 </body>
 </html>
