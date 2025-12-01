@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Charlie Web Engineer</title>
+  <title>Charlie Web Engineer — Futuristic Portfolio</title>
 
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -16,59 +16,105 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js"></script>
 
   <style>
-    /* ---------- Visual theme ---------- */
-    :root { --neon: #00f2ff; --neon-weak: rgba(0,242,255,0.14); }
+    /* ---------------- Theme variables ---------------- */
+    :root { --neon: #00f2ff; --neon-weak: rgba(0,242,255,0.12); --glass-bg: rgba(0,10,20,0.55); }
     html,body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
 
-    /* Glow effect used across the site */
+    /* ---------------- Glow & Helpers ---------------- */
     .glow { text-shadow: 0 0 8px var(--neon), 0 0 18px var(--neon); }
+    .glass { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); backdrop-filter: blur(6px); }
 
-    /* Card hover 3D */
-    .card-hover { transition: transform .35s ease, box-shadow .35s ease; transform-origin: center; }
-    .card-hover:hover { transform: translateY(-6px) rotateX(2deg) rotateY(6deg); box-shadow: 0 10px 40px rgba(0,242,255,0.12); }
-
-    /* Preloader full screen */
+    /* ---------- Preloader ---------- */
     #loader {
-      position: fixed; inset: 0; z-index: 60; display:flex; align-items:center; justify-content:center;
-      background: linear-gradient(180deg,#000000 0%, #020617 100%);
+      position: fixed; inset: 0; z-index: 80; display:flex; align-items:center; justify-content:center;
+      background: linear-gradient(180deg,#000 0%, #020617 100%);
     }
     .loader-ring { width:64px; height:64px; border-radius:999px; border:6px solid var(--neon); border-top-color: transparent; animation: spin 1s linear infinite; box-shadow: 0 0 20px var(--neon); }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Hamburger / Icon animation */
-    .hamburger span { display:block; width:24px; height:2px; margin:4px 0; background:var(--neon); border-radius:2px; transition: .35s; box-shadow: 0 0 6px var(--neon); }
-    .hamburger.open span:nth-child(1){ transform: rotate(45deg) translate(5px,5px); }
-    .hamburger.open span:nth-child(2){ opacity:0; transform: translateX(-8px); }
-    .hamburger.open span:nth-child(3){ transform: rotate(-45deg) translate(5px,-5px); }
+    /* ---------- Header (Glass) ---------- */
+    header {
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      background: rgba(0, 10, 20, 0.55);
+      border-bottom: 1px solid rgba(0, 255, 255, 0.06);
+      box-shadow: 0 4px 30px rgba(0, 255, 255, 0.04);
+    }
 
-    /* Mobile menu overlay (half screen) */
-    .mobile-overlay { position: fixed; top:0; right:0; width:100%; height:50vh; z-index:55; display:flex; flex-direction:column; align-items:center; justify-content:center; background: linear-gradient(180deg, rgba(0,0,0,0.96), rgba(0,0,0,0.92)); backdrop-filter: blur(6px); }
-    .mobile-overlay a { color: var(--neon); text-decoration:none; font-weight:600; }
+    /* ---------- Hamburger (Glass Capsule) ---------- */
+    .hamburger {
+      padding: 10px 12px;
+      border-radius: 14px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(0, 15, 25, 0.55);
+      border: 1px solid rgba(0,255,255,0.06);
+      box-shadow: 0 6px 20px rgba(0,255,255,0.08);
+      transition: transform .28s ease, background .28s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hamburger:hover { transform: scale(1.04); }
 
-    /* slide-in for overlay */
+    .hamburger span {
+      display:block;
+      width:26px;
+      height:2px;
+      margin:4px 0;
+      background:var(--neon);
+      border-radius:4px;
+      box-shadow:0 0 8px var(--neon);
+      transition: all .3s ease;
+    }
+    .hamburger.open span:nth-child(1){
+      transform: rotate(45deg) translate(6px,6px);
+    }
+    .hamburger.open span:nth-child(2){
+      opacity:0; transform: translateX(-12px);
+    }
+    .hamburger.open span:nth-child(3){
+      transform: rotate(-45deg) translate(6px,-6px);
+    }
+
+    /* ---------- Mobile overlay (half-screen glass) ---------- */
+    .mobile-overlay {
+      position: fixed; top:0; right:0; width:100%; height:50vh; z-index:75;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      background: linear-gradient(180deg, rgba(2,6,10,0.96), rgba(2,6,10,0.92));
+      backdrop-filter: blur(10px);
+      border-bottom-left-radius: 14px;
+      border-left: 1px solid rgba(255,255,255,0.02);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    /* slide-in animation */
     @keyframes slideInRight { 0%{ transform: translateX(100%); opacity:0 } 100%{ transform: translateX(0); opacity:1 } }
     .animate-slideInRight { animation: slideInRight .45s ease-out forwards; }
 
-    /* Sequential menu links (initial hidden) */
-    .menu-link { opacity:0; transform: translateX(36px); animation-fill-mode:forwards; }
+    /* sequential menu links */
+    .menu-link { opacity:0; transform: translateX(32px); animation-fill-mode:forwards; }
     .menu-link.show { animation: menuSlide .45s cubic-bezier(.2,.9,.2,1) forwards; }
     @keyframes menuSlide { to { opacity:1; transform: translateX(0); } }
-
-    /* Menu link hover underline glow */
     .menu-link:hover { text-decoration-line: underline; text-decoration-thickness:2px; text-underline-offset:6px; text-decoration-color: var(--neon); }
 
-    /* small helper */
-    .glass { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); }
+    /* ---------- Cards hover 3D ---------- */
+    .card-hover { transition: transform .35s ease, box-shadow .35s ease; transform-origin: center; }
+    .card-hover:hover { transform: translateY(-6px) rotateX(2deg) rotateY(6deg); box-shadow: 0 14px 60px rgba(0,242,255,0.08); }
+
+    /* responsive small tweaks */
+    @media (min-width: 768px) {
+      .mobile-overlay { width: 420px; right: 40px; height: 60vh; border-radius: 12px; }
+    }
   </style>
 </head>
-
 <body class="bg-black text-white" id="top">
   <!-- PRELOADER -->
-  <div id="loader">
+  <div id="loader" role="status" aria-hidden="false">
     <div class="loader-ring" aria-hidden="true"></div>
   </div>
 
-  <!-- NAV -->
+  <!-- HEADER -->
   <header class="fixed top-0 left-0 w-full z-50">
     <div class="max-w-6xl mx-auto px-5">
       <div class="flex items-center justify-between h-16">
@@ -80,14 +126,14 @@
           </div>
         </a>
 
-        <!-- hamburger visible on mobile -->
+        <!-- hamburger (mobile visible) -->
         <div class="md:hidden">
-          <button id="menu-btn" aria-label="Open menu" class="hamburger focus:outline-none" type="button">
+          <button id="menu-btn" aria-label="Open menu" class="hamburger" type="button">
             <span></span><span></span><span></span>
           </button>
         </div>
 
-        <!-- desktop links -->
+        <!-- desktop nav -->
         <nav class="hidden md:flex items-center gap-8 text-gray-300">
           <a href="#about" class="hover:text-cyan-300 transition">About</a>
           <a href="#projects" class="hover:text-cyan-300 transition">Projects</a>
@@ -97,20 +143,20 @@
     </div>
   </header>
 
-  <!-- MOBILE OVERLAY (initially hidden) -->
+  <!-- MOBILE MENU (hidden initially) -->
   <div id="mobile-menu" class="hidden">
     <div class="mobile-overlay glass animate-slideInRight">
-      <button id="menu-close" aria-label="Close menu" class="absolute top-4 right-6 text-3xl text-cyan-400 hover:text-white">×</button>
+      <button id="menu-close" aria-label="Close menu" class="absolute top-3 right-4 text-3xl text-cyan-400 hover:text-white">×</button>
 
-      <!-- links: include menu-link class for animation & 'Home' -->
-      <a href="#top" class="menu-link text-2xl sm:text-3xl block mb-3 glow">Home</a>
-      <a href="#about" class="menu-link text-2xl sm:text-3xl block mb-3 glow">About</a>
-      <a href="#projects" class="menu-link text-2xl sm:text-3xl block mb-3 glow">Projects</a>
-      <a href="#contact" class="menu-link text-2xl sm:text-3xl block mb-3 glow">Contact</a>
+      <!-- sequential links including Home -->
+      <a href="#top" class="menu-link text-2xl sm:text-3xl block mb-2 glow">Home</a>
+      <a href="#about" class="menu-link text-2xl sm:text-3xl block mb-2 glow">About</a>
+      <a href="#projects" class="menu-link text-2xl sm:text-3xl block mb-2 glow">Projects</a>
+      <a href="#contact" class="menu-link text-2xl sm:text-3xl block mb-2 glow">Contact</a>
     </div>
   </div>
 
-  <!-- MAIN -->
+  <!-- MAIN CONTENT -->
   <main class="pt-20">
 
     <!-- HERO -->
@@ -125,15 +171,13 @@
         </div>
       </div>
 
-      <!-- hero visual: your image and 3D canvas -->
+      <!-- hero visuals: image + 3D canvas -->
       <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-        <!-- image -->
         <div class="order-2 md:order-1" data-aos="zoom-in">
-          <img src="IMG_20251114_192809_223.webp" alt="Charlie - hero" class="w-full h-72 md:h-80 object-cover rounded-xl shadow-[0_20px_60px_rgba(0,242,255,0.06)]" />
+          <img src="IMG_20251114_192809_223.webp" alt="Charlie - hero" class="w-full h-72 md:h-80 object-cover rounded-xl shadow-[0_22px_60px_rgba(0,242,255,0.04)]" />
         </div>
 
-        <!-- three.js canvas -->
-        <div class="order-1 md:order-2" data-aos="zoom-in" id="three-wrap">
+        <div id="three-wrap" class="order-1 md:order-2" data-aos="zoom-in">
           <canvas id="three-canvas" class="w-full h-72 md:h-80 rounded-xl"></canvas>
         </div>
       </div>
@@ -226,8 +270,8 @@
     </section>
 
     <!-- CONTACT -->
-    <section id="contact" class="max-w-6xl mx-auto px-5 py-12 bg-black/20 rounded-xl">
-      <div class="text-center" data-aos="fade-up">
+    <section id="contact" class="max-w-6xl mx-auto px-5 py-12 bg-black/20 rounded-xl" data-aos="fade-up">
+      <div class="text-center">
         <h3 class="text-2xl font-bold text-cyan-300 glow">Let's Work Together</h3>
         <p class="mt-3 text-gray-300">Reach me by phone or email — choose what works best for you.</p>
 
@@ -251,11 +295,12 @@
     <footer class="max-w-6xl mx-auto px-5 py-8 text-center text-gray-400">
       © 2025 Charlie Web Engineer — All Rights Reserved
     </footer>
+
   </main>
 
-  <!-- SCRIPTS: AOS init, loader, three.js, menu toggles, more-projects toggle -->
+  <!-- SCRIPTS -->
   <script>
-    // Hide loader when page loaded
+    // Hide loader on page load
     window.addEventListener('load', () => {
       const loader = document.getElementById('loader');
       if (loader) loader.style.display = 'none';
@@ -264,22 +309,27 @@
     // Init AOS
     AOS.init({ duration: 900, easing: 'ease-in-out', once: true });
 
-    /* ---------- three.js: simple neon cube ---------- */
+    /* ---------- three.js neon cube (responsive) ---------- */
     (function initThree(){
       try {
-        const wrap = document.getElementById('three-wrap');
         const canvas = document.getElementById('three-canvas');
         const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         renderer.setPixelRatio(dpr);
-        renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+
+        function resizeRenderer(){
+          const w = canvas.clientWidth || canvas.parentElement.clientWidth;
+          const h = canvas.clientHeight || canvas.parentElement.clientHeight;
+          renderer.setSize(w, h, false);
+        }
+        resizeRenderer();
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(35, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
         camera.position.z = 4;
 
-        const geometry = new THREE.BoxGeometry(1.2, 1.2, 1.2);
-        const material = new THREE.MeshStandardMaterial({ color: 0x00f2ff, emissive: 0x00f2ff, metalness: .2, roughness: .2 });
+        const geometry = new THREE.BoxGeometry(1.1, 1.1, 1.1);
+        const material = new THREE.MeshStandardMaterial({ color: 0x00f2ff, emissive: 0x00f2ff, metalness: .25, roughness: .25 });
         const cube = new THREE.Mesh(geometry, material);
         scene.add(cube);
 
@@ -287,17 +337,14 @@
         light1.position.set(2,2,3);
         scene.add(light1);
 
-        const light2 = new THREE.AmbientLight(0x00222a, 0.4);
-        scene.add(light2);
+        const ambient = new THREE.AmbientLight(0x00222a, 0.4);
+        scene.add(ambient);
 
-        function onResize(){
-          const w = canvas.clientWidth;
-          const h = canvas.clientHeight;
-          renderer.setSize(w, h, false);
-          camera.aspect = w / h;
+        window.addEventListener('resize', () => {
+          resizeRenderer();
+          camera.aspect = canvas.clientWidth / canvas.clientHeight;
           camera.updateProjectionMatrix();
-        }
-        window.addEventListener('resize', onResize);
+        });
 
         function animate(){
           requestAnimationFrame(animate);
@@ -306,43 +353,48 @@
           renderer.render(scene, camera);
         }
         animate();
-      } catch (e) {
-        console.warn('Three.js failed to initialize:', e);
+      } catch(e) {
+        console.warn('Three.js init failed', e);
       }
     })();
 
-    /* ---------- Mobile hamburger menu logic ---------- */
+    /* ---------- mobile menu logic ---------- */
     (function mobileMenu(){
       const menuBtn = document.getElementById('menu-btn');
       const mobileMenu = document.getElementById('mobile-menu');
       const menuClose = document.getElementById('menu-close');
       const menuLinks = document.querySelectorAll('#mobile-menu .menu-link');
 
-      function openMenu() {
+      function openMenu(){
         menuBtn.classList.add('open');
+        // show overlay container
         mobileMenu.classList.remove('hidden');
-        mobileMenu.classList.add('flex','animate-slideInRight');
-        // reveal links one-by-one
-        menuLinks.forEach((link, i) => {
+        // ensure it displays flex and animate
+        const overlay = mobileMenu.querySelector('.mobile-overlay');
+        overlay.classList.remove('opacity-0');
+        overlay.classList.add('flex','animate-slideInRight');
+        // reveal links sequentially
+        menuLinks.forEach((link,i) => {
           link.classList.remove('show');
-          setTimeout(() => link.classList.add('show'), 90 * (i+1));
+          setTimeout(()=> link.classList.add('show'), 90*(i+1));
         });
       }
-      function closeMenu() {
+      function closeMenu(){
         menuBtn.classList.remove('open');
-        mobileMenu.classList.remove('flex','animate-slideInRight');
+        const overlay = mobileMenu.querySelector('.mobile-overlay');
+        overlay.classList.remove('animate-slideInRight','flex');
         mobileMenu.classList.add('hidden');
         menuLinks.forEach(link => link.classList.remove('show'));
       }
 
       menuBtn && menuBtn.addEventListener('click', () => {
-        // toggle
         const hidden = mobileMenu.classList.contains('hidden');
         if (hidden) openMenu(); else closeMenu();
       });
+
       menuClose && menuClose.addEventListener('click', closeMenu);
 
-      // Close menu when clicking a link (for good UX)
+      // close menu on link click for good UX
       menuLinks.forEach(link => {
         link.addEventListener('click', () => {
           closeMenu();
@@ -358,8 +410,7 @@
         if (more.classList.contains('hidden')) {
           more.classList.remove('hidden');
           btn.textContent = 'Show Less';
-          // animate newly visible items
-          AOS.refresh(); // refresh AOS so animations run
+          AOS.refresh(); // refresh AOS to trigger animations for newly shown elements
         } else {
           more.classList.add('hidden');
           btn.textContent = 'More Projects';
